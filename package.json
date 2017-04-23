@@ -1,8 +1,8 @@
 {
   "name": "sinomap",
   "description": "Featherweight China map visualizing lib using canvas.",
-  "version": "0.0.1",
-  "keywords": [],
+  "version": "0.0.2",
+  "keywords": ["china", "map", "canvas"],
   "scripts": {
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "prod": "cross-env NODE_ENV=production rollup -c"
@@ -19,5 +19,5 @@
     "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^3.2.2"
   },
-  "main": "dist/.js"
+  "main": "dist/sinomap.js"
 }
