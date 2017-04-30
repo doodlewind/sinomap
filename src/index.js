@@ -1,4 +1,10 @@
 import { renderMap } from './libs/renderer'
 
-if (typeof module !== 'undefined') module.exports = { renderMap }
-else window.renderMap = renderMap
+const sinomap = {
+  init (args) {
+    return renderMap(args)
+  }
+}
+
+if (typeof module !== 'undefined') module.exports = sinomap
+else window.sinomap = sinomap

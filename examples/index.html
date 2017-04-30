@@ -7,7 +7,11 @@
 <script>
 // window.requestAnimationFrame(mainLoop)
 function mainLoop () {
-  window.renderMap()
+  let map = window.sinomap.init({
+    width: 1000,
+    height: 600
+  })
+  console.log(map)
   // window.requestAnimationFrame(mainLoop)
 }
 
