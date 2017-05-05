@@ -1,4 +1,4 @@
-import { mercator, fitSize } from './core'
+import { mercator, transform, moveToOrigin } from './utils'
 import china from '../resources/china.json'
 
 function getScaleFactor () {
@@ -40,17 +40,24 @@ function rndColor () {
 function draw (ctx, arr, {
     xOff = 0,
     yOff = 0,
+    dX = 0,
+    dY = 0,
     scale = 20000,
     color = '#ddd'
   } = {}) {
+  let _arr = moveToOrigin({ dX, dY }, arr)
+  console.log(dX, dY)
   ctx.fillStyle = color
-  for (let i = 0; i < arr.length; i++) {
-    let [x, y] = mercator(arr[i][0], arr[i][1])
+  for (let i = 0; i < _arr.length; i++) {
+    let [x, y] = [_arr[i][0], _arr[i][1]]
+    // console.log(x, y)
     if (i === 0) {
       ctx.beginPath()
-      ctx.lineTo(x / scale - xOff, yOff - y / scale)
+      // ctx.lineTo(x / scale - xOff, yOff - y / scale)
+      ctx.lineTo(x, 100 - y)
     } else {
-      ctx.lineTo(x / scale - xOff, yOff - y / scale)
+      // ctx.lineTo(x / scale - xOff, yOff - y / scale)
+      ctx.lineTo(x, 100 - y)
     }
   }
   ctx.closePath()
@@ -60,9 +67,18 @@ function draw (ctx, arr, {
 export function renderMap (args) {
   const map = initMap(args)
   const ctx = map.getContext('2d')
-  const conf = fitSize(args.width, args.height)
+  // offsetX, offsetY, scale, dX, dY
+  let mapArgs = transform(china, args.width, args.height)
 
-  china.features.forEach((province, i) => {
+  const conf = {
+    xOff: mapArgs.offsetX,
+    yOff: mapArgs.offsetY,
+    dX: mapArgs.dX,
+    dY: mapArgs.dY,
+    scale: mapArgs.scale
+  }
+
+  china.features.forEach(province => {
     conf.color = rndColor()
     if (province.geometry.type === 'Polygon') {
       province.geometry.coordinates.forEach(shapeArr => {
