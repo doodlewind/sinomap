@@ -1,4 +1,4 @@
-import { mercator, transform, moveToOrigin } from './utils'
+import { transform, moveToOrigin } from './utils'
 import china from '../resources/china.json'
 
 function getScaleFactor () {
@@ -38,27 +38,21 @@ function rndColor () {
 }
 
 function draw (ctx, arr, {
+    width = 0,
+    height = 0,
     xOff = 0,
     yOff = 0,
-    dX = 0,
-    dY = 0,
+    xMin = 0,
+    yMin = 0,
     scale = 20000,
     color = '#ddd'
   } = {}) {
-  let _arr = moveToOrigin({ dX, dY }, arr)
-  console.log(dX, dY)
+  let _arr = moveToOrigin(xMin, yMin, arr)
   ctx.fillStyle = color
   for (let i = 0; i < _arr.length; i++) {
     let [x, y] = [_arr[i][0], _arr[i][1]]
-    // console.log(x, y)
-    if (i === 0) {
-      ctx.beginPath()
-      // ctx.lineTo(x / scale - xOff, yOff - y / scale)
-      ctx.lineTo(x, 100 - y)
-    } else {
-      // ctx.lineTo(x / scale - xOff, yOff - y / scale)
-      ctx.lineTo(x, 100 - y)
-    }
+    if (i === 0) ctx.beginPath()
+    ctx.lineTo(x * scale + xOff, height - y * scale - yOff)
   }
   ctx.closePath()
   ctx.fill()
@@ -67,14 +61,15 @@ function draw (ctx, arr, {
 export function renderMap (args) {
   const map = initMap(args)
   const ctx = map.getContext('2d')
-  // offsetX, offsetY, scale, dX, dY
   let mapArgs = transform(china, args.width, args.height)
 
   const conf = {
+    width: args.width,
+    height: args.height,
     xOff: mapArgs.offsetX,
     yOff: mapArgs.offsetY,
-    dX: mapArgs.dX,
-    dY: mapArgs.dY,
+    xMin: mapArgs.xMin,
+    yMin: mapArgs.yMin,
     scale: mapArgs.scale
   }
 

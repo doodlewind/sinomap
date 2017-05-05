@@ -38,7 +38,7 @@ function getAreaInfo (arr) {
   let xMax = arr.reduce((a, b) => a[0] > b[0] ? a : b)[0]
   let yMin = arr.reduce((a, b) => a[1] < b[1] ? a : b)[1]
   let yMax = arr.reduce((a, b) => a[1] > b[1] ? a : b)[1]
-  return { w: xMax - xMin, h: yMax - yMin, dX: xMin, dY: yMin }
+  return { w: xMax - xMin, h: yMax - yMin, xMin, yMin }
 }
 
 // 输入源区域宽高
@@ -57,22 +57,27 @@ function getScaleArgs ([srcW, srcH], [boundW, boundH]) {
 
 export function transform (geoJSON, boundW, boundH) {
   let coordinates = getAllCoordinates(geoJSON)
-  let src = getAreaInfo(coordinates)
+  // console.log(coordinates)
+  let areaInfo = getAreaInfo(coordinates)
+  console.log(areaInfo)
   let [offsetX, offsetY, scale] = getScaleArgs(
-    [src.w, src.h],
+    [areaInfo.w, areaInfo.h],
     [boundW, boundH]
   )
-  let areaInfo = getAreaInfo(coordinates)
   return {
     offsetX,
     offsetY,
-    scale,
-    dX: areaInfo.dX,
-    dY: areaInfo.dY
+    xMin: areaInfo.xMin,
+    yMin: areaInfo.yMin,
+    scale
   }
 }
 
 // 返回移动 [[x, y]...] 二维数组区域至原点的新数组
-export function moveToOrigin (args, arr) {
-  return arr.map(p => [p[0] - args.dX, p[1] - args.dY])
+export function moveToOrigin (xMin, yMin, arr) {
+  // console.log(xMin, yMin)
+  return arr.map(p => {
+    let [x, y] = mercator(p[0], p[1])
+    return [x - xMin, y - yMin]
+  })
 }

@@ -2,19 +2,21 @@
 <html>
   <head><title>China map demo</title></head>
   <body>
+    <style>
+      #map { display: flex; justify-content: center; }
+    </style>
     <div id="map"></div>
     <script src="../dist/sinomap.js" charset="utf-8"></script>
-<script>
-// window.requestAnimationFrame(mainLoop)
-function mainLoop () {
-  window.sinomap.init({
-    width: 1000,
-    height: 600
-  })
-  // window.requestAnimationFrame(mainLoop)
-}
-
-mainLoop()
-</script>
+    <script>
+      // window.requestAnimationFrame(mainLoop)
+      function mainLoop () {
+        window.sinomap.init({
+          width: 500,
+          height: 400
+        })
+        // window.requestAnimationFrame(mainLoop)
+      }
+      mainLoop()
+    </script>
   </body>
 </html>
