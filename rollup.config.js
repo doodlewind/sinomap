@@ -6,7 +6,8 @@ const plugins = [json(), babel()]
 if (process.env.NODE_ENV === 'production') plugins.push(uglify())
 
 export default({
-  entry: 'src/index.js',
+  entry: 'src/sinomap.js',
+  moduleName: 'sinomap',
   format: 'iife',
   plugins: plugins,
   dest: 'dist/sinomap.js'

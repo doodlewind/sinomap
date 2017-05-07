@@ -1,9 +1,7 @@
-// window.requestAnimationFrame(mainLoop)
-function mainLoop () {
-  window.sinomap.init({
-    width: 500,
-    height: 400
-  })
-  // window.requestAnimationFrame(mainLoop)
-}
-mainLoop()
+const Sinomap = window.Sinomap
+
+/* eslint-disable no-new */
+new Sinomap({
+  width: 500,
+  height: 400
+})
