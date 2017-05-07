@@ -57,9 +57,7 @@ function getScaleArgs ([srcW, srcH], [boundW, boundH]) {
 
 export function transform (geoJSON, boundW, boundH) {
   let coordinates = getAllCoordinates(geoJSON)
-  // console.log(coordinates)
   let areaInfo = getAreaInfo(coordinates)
-  console.log(areaInfo)
   let [offsetX, offsetY, scale] = getScaleArgs(
     [areaInfo.w, areaInfo.h],
     [boundW, boundH]
@@ -75,7 +73,6 @@ export function transform (geoJSON, boundW, boundH) {
 
 // 返回移动 [[x, y]...] 二维数组区域至原点的新数组
 export function moveToOrigin (xMin, yMin, arr) {
-  // console.log(xMin, yMin)
   return arr.map(p => {
     let [x, y] = mercator(p[0], p[1])
     return [x - xMin, y - yMin]
