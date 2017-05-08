@@ -1,20 +1,18 @@
-import { renderMap } from './libs/renderer'
+import { initMap, renderMap } from './libs/renderer'
 
 export default class Sinomap {
-  constructor ({
-      width = 1000,
-      height = 600,
-      area = null,
-      style = {}
-    } = {}) {
-    this.width = width
-    this.height = height
-    this.style = style
-    this.area = area
-    this.renderMap = renderMap
-
-    this.renderMap()
+  constructor (conf) {
+    Object.keys(conf).forEach(key => {
+      this[key] = conf[key]
+    })
+    this.init()
+    this.update()
+    return this
+  }
+  init () {
+    initMap.bind(this)()
+  }
+  update () {
+    renderMap.bind(this)()
   }
 }
-
-if (typeof module !== 'undefined') window.Sinomap = Sinomap

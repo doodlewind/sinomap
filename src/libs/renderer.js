@@ -1,4 +1,4 @@
-import { transform, moveToOrigin } from './utils'
+import { transform, moveToOrigin } from './coordinate-utils'
 
 function getScaleFactor () {
   if (!('devicePixelRatio' in window)) return 1
@@ -18,15 +18,14 @@ function createCanvas (width, height) {
   return canvas
 }
 
-function initMap ({
-    el = '#map',
-    width = 1000,
-    height = 600
-  } = {}) {
-  const target = document.querySelector(el)
-  const map = createCanvas(width, height)
-  target.appendChild(map)
-  return map
+function initListener (canvas) {
+  canvas.addEventListener('mousemove', e => this.update())
+}
+
+// mock
+function mockColor () {
+  const rnd = () => parseInt(Math.random() * 255).toString(16)
+  return '#' + rnd() + rnd() + rnd()
 }
 
 function draw (ctx, arr, {
@@ -34,7 +33,9 @@ function draw (ctx, arr, {
     style = {}
   } = {}) {
   let _arr = moveToOrigin(xMin, yMin, arr)
-  ctx.fillStyle = style.color
+  // mock
+  // ctx.fillStyle = style.color
+  ctx.fillStyle = mockColor()
   ctx.strokeStyle = style.borderColor
   for (let i = 0; i < _arr.length; i++) {
     let [x, y] = [_arr[i][0], _arr[i][1]]
@@ -46,9 +47,18 @@ function draw (ctx, arr, {
   ctx.stroke()
 }
 
+export function initMap (el, width, height) {
+  const target = typeof this.el === 'string'
+    ? document.querySelector(this.el) : this.el
+  if (!target) throw new Error('[Sinomap] Target element not found.')
+
+  this.mapCanvas = createCanvas(this.width, this.height)
+  this.ctx = this.mapCanvas.getContext('2d')
+  target.appendChild(this.mapCanvas)
+  initListener.bind(this)(this.mapCanvas)
+}
+
 export function renderMap () {
-  const map = initMap({ width: this.width, height: this.height })
-  const ctx = map.getContext('2d')
   let mapArgs = transform(this.area, this.width, this.height)
 
   const conf = {
@@ -62,15 +72,15 @@ export function renderMap () {
     scale: mapArgs.scale
   }
 
-  this.area.features.forEach(province => {
-    if (province.geometry.type === 'Polygon') {
-      province.geometry.coordinates.forEach(shapeArr => {
-        draw(ctx, shapeArr, conf)
+  this.area.features.forEach(subArea => {
+    if (subArea.geometry.type === 'Polygon') {
+      subArea.geometry.coordinates.forEach(shapeArr => {
+        draw(this.ctx, shapeArr, conf)
       })
     } else {
-      province.geometry.coordinates.forEach(shapes => {
+      subArea.geometry.coordinates.forEach(shapes => {
         shapes.forEach(shapeArr => {
-          draw(ctx, shapeArr, conf)
+          draw(this.ctx, shapeArr, conf)
         })
       })
     }
