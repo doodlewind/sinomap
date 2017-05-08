@@ -29,13 +29,6 @@ function initMap ({
   return map
 }
 
-function rndColor () {
-  let r = parseInt(Math.random() * 10000) % 256
-  let g = parseInt(Math.random() * 10000) % 256
-  let b = parseInt(Math.random() * 10000) % 256
-  return '#' + [r, g, b].map(x => x.toString(16)).join('')
-}
-
 function draw (ctx, arr, {
     width, height, xOff, yOff, xMin, yMin, scale,
     style = {}
@@ -70,7 +63,6 @@ export function renderMap () {
   }
 
   this.area.features.forEach(province => {
-    conf.color = rndColor()
     if (province.geometry.type === 'Polygon') {
       province.geometry.coordinates.forEach(shapeArr => {
         draw(ctx, shapeArr, conf)
