@@ -4,11 +4,13 @@ export default class Sinomap {
   constructor ({
       width = 1000,
       height = 600,
-      geoJSON = null
+      area = null,
+      style = {}
     } = {}) {
     this.width = width
     this.height = height
-    this.geoJSON = geoJSON
+    this.style = style
+    this.area = area
     this.renderMap = renderMap
 
     this.renderMap()

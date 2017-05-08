@@ -37,17 +37,12 @@ function rndColor () {
 }
 
 function draw (ctx, arr, {
-    width = 0,
-    height = 0,
-    xOff = 0,
-    yOff = 0,
-    xMin = 0,
-    yMin = 0,
-    scale = 20000,
-    color = '#ddd'
+    width, height, xOff, yOff, xMin, yMin, scale,
+    style = {}
   } = {}) {
   let _arr = moveToOrigin(xMin, yMin, arr)
-  ctx.fillStyle = color
+  ctx.fillStyle = style.color
+  ctx.strokeStyle = style.borderColor
   for (let i = 0; i < _arr.length; i++) {
     let [x, y] = [_arr[i][0], _arr[i][1]]
     if (i === 0) ctx.beginPath()
@@ -55,16 +50,18 @@ function draw (ctx, arr, {
   }
   ctx.closePath()
   ctx.fill()
+  ctx.stroke()
 }
 
 export function renderMap () {
   const map = initMap({ width: this.width, height: this.height })
   const ctx = map.getContext('2d')
-  let mapArgs = transform(this.geoJSON, this.width, this.height)
+  let mapArgs = transform(this.area, this.width, this.height)
 
   const conf = {
     width: this.width,
     height: this.height,
+    style: this.style,
     xOff: mapArgs.offsetX,
     yOff: mapArgs.offsetY,
     xMin: mapArgs.xMin,
@@ -72,7 +69,7 @@ export function renderMap () {
     scale: mapArgs.scale
   }
 
-  this.geoJSON.features.forEach(province => {
+  this.area.features.forEach(province => {
     conf.color = rndColor()
     if (province.geometry.type === 'Polygon') {
       province.geometry.coordinates.forEach(shapeArr => {

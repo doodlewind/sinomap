@@ -4,7 +4,11 @@ fetch('../src/resources/china.json').then(resp =>
     new Sinomap({
       width: 500,
       height: 400,
-      geoJSON: china
+      style: {
+        color: 'lightcoral',
+        borderColor: 'white',
+      },
+      area: china
     })
   )
 )
