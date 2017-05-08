@@ -10,6 +10,8 @@ export default class Sinomap {
     return this
   }
   init () {
+    this.mouseX = 0
+    this.mouseY = 0
     initMap.bind(this)()
   }
   update () {

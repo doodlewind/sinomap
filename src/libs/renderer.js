@@ -19,7 +19,15 @@ function createCanvas (width, height) {
 }
 
 function initListener (canvas) {
-  canvas.addEventListener('mousemove', e => this.update())
+  canvas.addEventListener('mousemove', e => {
+    let box = this.mapCanvas.getBoundingClientRect()
+    let x = e.clientX
+    let y = e.clientY
+    this.mouseX = (x - box.left) * this.mapCanvas.width / box.width
+    this.mouseY = (y - box.top) * this.mapCanvas.height / box.height
+    // console.log(this.mouseX, this.mouseY)
+    this.update()
+  })
 }
 
 // mock
