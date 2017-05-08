@@ -1,9 +1,17 @@
 import { renderMap } from './libs/renderer'
 
 export default class Sinomap {
-  constructor (conf) {
-    this.conf = conf
-    renderMap(this.conf)
+  constructor ({
+      width = 1000,
+      height = 600,
+      geoJSON = null
+    } = {}) {
+    this.width = width
+    this.height = height
+    this.geoJSON = geoJSON
+    this.renderMap = renderMap
+
+    this.renderMap()
   }
 }
 

@@ -1,5 +1,4 @@
 import { transform, moveToOrigin } from './utils'
-import china from '../resources/china.json'
 
 function getScaleFactor () {
   if (!('devicePixelRatio' in window)) return 1
@@ -58,14 +57,14 @@ function draw (ctx, arr, {
   ctx.fill()
 }
 
-export function renderMap (args) {
-  const map = initMap(args)
+export function renderMap () {
+  const map = initMap({ width: this.width, height: this.height })
   const ctx = map.getContext('2d')
-  let mapArgs = transform(china, args.width, args.height)
+  let mapArgs = transform(this.geoJSON, this.width, this.height)
 
   const conf = {
-    width: args.width,
-    height: args.height,
+    width: this.width,
+    height: this.height,
     xOff: mapArgs.offsetX,
     yOff: mapArgs.offsetY,
     xMin: mapArgs.xMin,
@@ -73,7 +72,7 @@ export function renderMap (args) {
     scale: mapArgs.scale
   }
 
-  china.features.forEach(province => {
+  this.geoJSON.features.forEach(province => {
     conf.color = rndColor()
     if (province.geometry.type === 'Polygon') {
       province.geometry.coordinates.forEach(shapeArr => {
@@ -87,5 +86,5 @@ export function renderMap (args) {
       })
     }
   })
-  return Object.assign({}, args, { ctx })
+  return this
 }

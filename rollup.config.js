@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') plugins.push(uglify())
 
 export default({
   entry: 'src/sinomap.js',
-  moduleName: 'sinomap',
+  moduleName: 'Sinomap',
   format: 'iife',
   plugins: plugins,
   dest: 'dist/sinomap.js'
