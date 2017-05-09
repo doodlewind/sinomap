@@ -10,6 +10,8 @@ export function mercator (longitude, latitude) {
   return [x, y]
 }
 
+// 由 area 地形数据返回所有子 subArea 经纬度数组
+// 用于后续计算区域地形参数
 function getAllCoordinates (geoJSON) {
   let coordinates = []
   geoJSON.features.forEach(feature => {
@@ -33,7 +35,7 @@ function getAllCoordinates (geoJSON) {
 }
 
 // 返回 [[x, y]...] 二维数组区域宽高及该区域相对 [0, 0] 的偏移
-function getAreaInfo (arr) {
+function getBound (arr) {
   let minX = arr.reduce((a, b) => a[0] < b[0] ? a : b)[0]
   let maxX = arr.reduce((a, b) => a[0] > b[0] ? a : b)[0]
   let minY = arr.reduce((a, b) => a[1] < b[1] ? a : b)[1]
@@ -56,27 +58,38 @@ function getScaleArgs ([srcW, srcH], [boundW, boundH]) {
 }
 
 // 返回移动 [[x, y]...] 二维数组区域至原点的新数组
-export function moveToOrigin (xMin, yMin, arr) {
+function moveToOrigin (minX, minY, arr) {
   return arr.map(p => {
     let [x, y] = mercator(p[0], p[1])
-    return [x - xMin, y - yMin]
+    return [x - minX, y - minY]
   })
 }
 
 // 根据 geoJSON 及 canvas 宽高
 // 返回 canvas 绘图所需坐标参数
-export function getRenderConf (geoJSON, boundW, boundH) {
+export function getRenderConf (geoJSON, canvasW, canvasH) {
   let coordinates = getAllCoordinates(geoJSON)
-  let areaInfo = getAreaInfo(coordinates)
+  let bound = getBound(coordinates)
   let [offsetX, offsetY, areaScale] = getScaleArgs(
-    [areaInfo.w, areaInfo.h],
-    [boundW, boundH]
+    [bound.w, bound.h],
+    [canvasW, canvasH]
   )
   return {
     offsetX,
     offsetY,
-    minX: areaInfo.minX,
-    minY: areaInfo.minY,
+    minX: bound.minX,
+    minY: bound.minY,
     areaScale
   }
+}
+
+// 根据经纬度数组及 canvas 绘图参数
+// 返回 canvas 坐标数组
+export function getPoints (arr, {
+    minX, minY, offsetX, offsetY, areaScale, height
+  } = {}) {
+  return moveToOrigin(minX, minY, arr).map(p => [
+    p[0] * areaScale + offsetX,
+    height - p[1] * areaScale - offsetY
+  ])
 }
