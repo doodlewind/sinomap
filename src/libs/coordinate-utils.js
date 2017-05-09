@@ -34,11 +34,11 @@ function getAllCoordinates (geoJSON) {
 
 // 返回 [[x, y]...] 二维数组区域宽高及该区域相对 [0, 0] 的偏移
 function getAreaInfo (arr) {
-  let xMin = arr.reduce((a, b) => a[0] < b[0] ? a : b)[0]
-  let xMax = arr.reduce((a, b) => a[0] > b[0] ? a : b)[0]
-  let yMin = arr.reduce((a, b) => a[1] < b[1] ? a : b)[1]
-  let yMax = arr.reduce((a, b) => a[1] > b[1] ? a : b)[1]
-  return { w: xMax - xMin, h: yMax - yMin, xMin, yMin }
+  let minX = arr.reduce((a, b) => a[0] < b[0] ? a : b)[0]
+  let maxX = arr.reduce((a, b) => a[0] > b[0] ? a : b)[0]
+  let minY = arr.reduce((a, b) => a[1] < b[1] ? a : b)[1]
+  let maxY = arr.reduce((a, b) => a[1] > b[1] ? a : b)[1]
+  return { w: maxX - minX, h: maxY - minY, minX, minY }
 }
 
 // 输入源区域宽高
@@ -55,26 +55,28 @@ function getScaleArgs ([srcW, srcH], [boundW, boundH]) {
   return [offsetX, offsetY, scale]
 }
 
-export function transform (geoJSON, boundW, boundH) {
-  let coordinates = getAllCoordinates(geoJSON)
-  let areaInfo = getAreaInfo(coordinates)
-  let [offsetX, offsetY, scale] = getScaleArgs(
-    [areaInfo.w, areaInfo.h],
-    [boundW, boundH]
-  )
-  return {
-    offsetX,
-    offsetY,
-    xMin: areaInfo.xMin,
-    yMin: areaInfo.yMin,
-    scale
-  }
-}
-
 // 返回移动 [[x, y]...] 二维数组区域至原点的新数组
 export function moveToOrigin (xMin, yMin, arr) {
   return arr.map(p => {
     let [x, y] = mercator(p[0], p[1])
     return [x - xMin, y - yMin]
   })
+}
+
+// 根据 geoJSON 及 canvas 宽高
+// 返回 canvas 绘图所需坐标参数
+export function getRenderConf (geoJSON, boundW, boundH) {
+  let coordinates = getAllCoordinates(geoJSON)
+  let areaInfo = getAreaInfo(coordinates)
+  let [offsetX, offsetY, areaScale] = getScaleArgs(
+    [areaInfo.w, areaInfo.h],
+    [boundW, boundH]
+  )
+  return {
+    offsetX,
+    offsetY,
+    minX: areaInfo.minX,
+    minY: areaInfo.minY,
+    areaScale
+  }
 }

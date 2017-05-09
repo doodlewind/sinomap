@@ -6,8 +6,7 @@ fetch('../resources/china.json').then(resp =>
       width: 500,
       height: 400,
       style: {
-        color: 'lightcoral',
-        borderColor: 'white',
+        color: 'lightcoral'
       },
       area: china
     })

@@ -1,14 +1,13 @@
-import { transform, moveToOrigin } from './coordinate-utils'
+import { getRenderConf, moveToOrigin } from './coordinate-utils'
 
-function getScaleFactor () {
+function getCanvasScale () {
   if (!('devicePixelRatio' in window)) return 1
   return window.devicePixelRatio > 1
     ? window.devicePixelRatio : 1
 }
 
-function createCanvas (width, height) {
+function createCanvas (width, height, scaleFactor) {
   const canvas = document.createElement('canvas')
-  let scaleFactor = getScaleFactor()
 
   canvas.width = width * scaleFactor
   canvas.height = height * scaleFactor
@@ -25,34 +24,36 @@ function initListener (canvas) {
     let y = e.clientY
     this.mouseX = (x - box.left) * this.mapCanvas.width / box.width
     this.mouseY = (y - box.top) * this.mapCanvas.height / box.height
-    // console.log(this.mouseX, this.mouseY)
     this.update()
   })
 }
 
-// mock
-function mockColor () {
-  const rnd = () => parseInt(Math.random() * 255).toString(16)
-  return '#' + rnd() + rnd() + rnd()
+// hack
+function drawPoint (ctx, x, y, scale) {
+  ctx.fillStyle = 'red'
+  ctx.fillRect(x / scale, y / scale, 5, 5)
 }
 
-function draw (ctx, arr, {
-    width, height, xOff, yOff, xMin, yMin, scale,
-    style = {}
+function drawSubArea (arr, {
+    offsetX, offsetY, minX, minY, areaScale
   } = {}) {
-  let _arr = moveToOrigin(xMin, yMin, arr)
-  // mock
-  // ctx.fillStyle = style.color
-  ctx.fillStyle = mockColor()
-  ctx.strokeStyle = style.borderColor
+  let _arr = moveToOrigin(minX, minY, arr)
+  this.ctx.fillStyle = this.style.color
+  this.ctx.strokeStyle = this.style.borderColor
   for (let i = 0; i < _arr.length; i++) {
     let [x, y] = [_arr[i][0], _arr[i][1]]
-    if (i === 0) ctx.beginPath()
-    ctx.lineTo(x * scale + xOff, height - y * scale - yOff)
+    if (i === 0) this.ctx.beginPath()
+    this.ctx.lineTo(
+      x * areaScale + offsetX,
+      this.height - y * areaScale - offsetY
+    )
   }
-  ctx.closePath()
-  ctx.fill()
-  ctx.stroke()
+  this.ctx.closePath()
+  this.ctx.fill()
+  this.ctx.stroke()
+  if (!!this.mouseX && !!this.mouseY) {
+    drawPoint(this.ctx, this.mouseX, this.mouseY, this.canvasScale)
+  }
 }
 
 export function initMap (el, width, height) {
@@ -60,37 +61,29 @@ export function initMap (el, width, height) {
     ? document.querySelector(this.el) : this.el
   if (!target) throw new Error('[Sinomap] Target element not found.')
 
-  this.mapCanvas = createCanvas(this.width, this.height)
+  this.mouseX = 0
+  this.mouseY = 0
+  this.canvasScale = getCanvasScale()
+  this.mapCanvas = createCanvas(this.width, this.height, this.canvasScale)
   this.ctx = this.mapCanvas.getContext('2d')
   target.appendChild(this.mapCanvas)
   initListener.bind(this)(this.mapCanvas)
 }
 
 export function renderMap () {
-  let mapArgs = transform(this.area, this.width, this.height)
-
-  const conf = {
-    width: this.width,
-    height: this.height,
-    style: this.style,
-    xOff: mapArgs.offsetX,
-    yOff: mapArgs.offsetY,
-    xMin: mapArgs.xMin,
-    yMin: mapArgs.yMin,
-    scale: mapArgs.scale
-  }
+  let conf = getRenderConf(this.area, this.width, this.height)
 
   this.area.features.forEach(subArea => {
     if (subArea.geometry.type === 'Polygon') {
-      subArea.geometry.coordinates.forEach(shapeArr => {
-        draw(this.ctx, shapeArr, conf)
-      })
+      subArea.geometry.coordinates.forEach(shapeArr =>
+        drawSubArea.bind(this)(shapeArr, conf)
+      )
     } else {
-      subArea.geometry.coordinates.forEach(shapes => {
-        shapes.forEach(shapeArr => {
-          draw(this.ctx, shapeArr, conf)
-        })
-      })
+      subArea.geometry.coordinates.forEach(shapes =>
+        shapes.forEach(shapeArr =>
+          drawSubArea.bind(this)(shapeArr, conf)
+        )
+      )
     }
   })
   return this
