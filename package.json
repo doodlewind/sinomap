@@ -1,7 +1,7 @@
 {
   "name": "sinomap",
-  "description": "Featherweight China map visualizing lib using canvas.",
-  "version": "0.2.3",
+  "description": "插件化的超轻量中国地图库",
+  "version": "0.2.4",
   "keywords": ["china", "map", "canvas"],
   "scripts": {
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
