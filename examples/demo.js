@@ -1,5 +1,5 @@
 /* eslint-disable */
-fetch('../src/resources/china.json').then(resp =>
+fetch('../resources/china.json').then(resp =>
   resp.json().then(china =>
     new Sinomap({
       el: '#map',
