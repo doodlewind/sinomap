@@ -1,12 +1,13 @@
 {
   "name": "sinomap",
   "description": "Featherweight China map visualizing lib using canvas.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "keywords": ["china", "map", "canvas"],
   "scripts": {
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "prod": "cross-env NODE_ENV=production rollup -c"
   },
+  "repository": "https://github.com/doodlewind/sinomap",
   "devDependencies": {
     "arraybuffer-equal": "^1.0.4",
     "babel-core": "^6.0.0",
