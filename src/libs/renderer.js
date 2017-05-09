@@ -28,12 +28,6 @@ function initListener (canvas) {
   })
 }
 
-// hack
-function drawPoint (ctx, x, y, scale) {
-  ctx.fillStyle = 'red'
-  ctx.fillRect(x / scale, y / scale, 5, 5)
-}
-
 function drawSubArea (arr, {
     offsetX, offsetY, minX, minY, areaScale
   } = {}) {
@@ -51,9 +45,8 @@ function drawSubArea (arr, {
   this.ctx.closePath()
   this.ctx.fill()
   this.ctx.stroke()
-  if (!!this.mouseX && !!this.mouseY) {
-    drawPoint(this.ctx, this.mouseX, this.mouseY, this.canvasScale)
-  }
+  // todo
+  // add hover style via this.mouseX and this.mouseY
 }
 
 export function initMap (el, width, height) {

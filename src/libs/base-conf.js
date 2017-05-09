@@ -1,7 +1,7 @@
 export default {
   el: null,
-  width: 0,
-  height: 0,
+  width: 600,
+  height: 400,
   style: {
     color: '#ddd',
     borderColor: 'white'
