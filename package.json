@@ -2,10 +2,18 @@
   "name": "sinomap",
   "description": "插件化的超轻量中国地图库",
   "version": "0.2.4",
-  "keywords": ["china", "map", "canvas"],
+  "keywords": [
+    "china",
+    "map",
+    "canvas"
+  ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rollup -c --watch",
-    "prod": "cross-env NODE_ENV=production rollup -c"
+    "dev-sinomap": "cross-env NODE_ENV=dev bundle=sinomap rollup -c --watch",
+    "dev-choropleth": "cross-env NODE_ENV=dev bundle=choropleth rollup -c --watch",
+    "prod-sinomap": "cross-env NODE_ENV=production bundle=sinomap rollup -c",
+    "prod-choropleth": "cross-env NODE_ENV=production bundle=choropleth rollup -c",
+    "build": "npm run prod-sinomap && npm run prod-choropleth",
+    "example": "http-server . -p 10006"
   },
   "repository": "https://github.com/doodlewind/sinomap",
   "devDependencies": {
@@ -14,6 +22,7 @@
     "babel-plugin-external-helpers": "^6.0.0",
     "babel-preset-es2015": "^6.0.0",
     "cross-env": "^3.0.0",
+    "http-server": "^0.10.0",
     "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-json": "^2.1.0",

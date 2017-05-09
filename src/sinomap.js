@@ -1,13 +1,6 @@
 import { initMap, renderMap } from './libs/renderer'
 import base from './libs/base-conf'
 
-// todo 添加独立 layer 打包入口
-import ChoroplethLayer from '../layers/choropleth/index'
-import population from '../resources/china-population.json'
-const layer = new ChoroplethLayer({
-  data: population
-})
-
 export default class Sinomap {
   constructor (conf) {
     this.init(conf)
@@ -20,8 +13,7 @@ export default class Sinomap {
     Object.keys(conf).forEach(key => {
       this[key] = conf[key]
     })
-    // hack
-    this.layer = layer
+    this.layer = conf.layer || {}
     // 由配置参数初始化地图
     initMap.bind(this)()
   }

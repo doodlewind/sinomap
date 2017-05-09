@@ -1,5 +1,5 @@
 # Sinomap
-轻巧、易用、插件化的中国地图可视化库
+插件化的超轻量中国地图库
 
 
 ## Why Sinomap
@@ -7,13 +7,15 @@ TODO
 
 
 ## Demo
-Clone 本项目后，在根目录运行静态服务器并打开 `examples/index.html` 即可。
+TODO Clone 本项目并 `npm install` 后，运行示例：
 
-TODO
+``` text
+npm run example
+```
 
+而后在浏览器中打开 `http://localhost:10006/examples/` 即可。
 
 ## API
-TODO
 
 ``` js
 import Sinomap from 'sinomap'
@@ -25,6 +27,21 @@ new Sinomap({
 })
 ```
 
+
+## 开发
+
+开发模式：
+
+``` text
+npm run dev-sinomap # Sinomap 基础库
+npm run dev-choropleth # 色级统计图插件
+```
+
+生产模式：
+
+``` text
+npm run build # 打包基础库及插件
+```
 
 ## License
 MIT

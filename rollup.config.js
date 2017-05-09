@@ -5,10 +5,25 @@ import uglify from 'rollup-plugin-uglify'
 const plugins = [json(), babel()]
 if (process.env.NODE_ENV === 'production') plugins.push(uglify())
 
-export default({
-  entry: 'src/sinomap.js',
-  moduleName: 'Sinomap',
+// 根据 npm script 中通过 cross-env 设入的环境变量
+// 区分打包路径
+const bundleName = process.env.bundle
+const bundleMapping = {
+  sinomap: {
+    entry: 'src/sinomap.js',
+    moduleName: 'Sinomap',
+    dest: 'dist/sinomap.js'
+  },
+  choropleth: {
+    entry: 'layers/choropleth/index.js',
+    moduleName: 'ChoroplethLayer',
+    dest: 'dist/layers/choropleth.js'
+  }
+}
+
+const baseConf = {
   format: 'iife',
-  plugins: plugins,
-  dest: 'dist/sinomap.js'
-})
+  plugins: plugins
+}
+
+export default(Object.assign({}, baseConf, bundleMapping[bundleName]))
