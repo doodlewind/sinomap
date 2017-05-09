@@ -5,7 +5,6 @@ export default class Sinomap {
   constructor (conf) {
     this.init(conf)
     this.update()
-    return this
   }
   init (conf) {
     // 初始化配置参数

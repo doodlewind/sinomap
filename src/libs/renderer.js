@@ -28,6 +28,21 @@ function initListener (canvas) {
   })
 }
 
+function drawHoverArea (arr, offsetX, offsetY, areaScale) {
+  this.ctx.fillStyle = this.style.hoverColor
+  for (let i = 0; i < arr.length; i++) {
+    let [x, y] = [arr[i][0], arr[i][1]]
+    if (i === 0) this.ctx.beginPath()
+    this.ctx.lineTo(
+      x * areaScale + offsetX,
+      this.height - y * areaScale - offsetY
+    )
+  }
+  this.ctx.closePath()
+  this.ctx.fill()
+}
+
+// 根据区域地形及参数绘制 canvas
 function drawSubArea (arr, {
     offsetX, offsetY, minX, minY, areaScale
   } = {}) {
@@ -45,8 +60,10 @@ function drawSubArea (arr, {
   this.ctx.closePath()
   this.ctx.fill()
   this.ctx.stroke()
-  // todo
-  // add hover style via this.mouseX and this.mouseY
+
+  if (this.ctx.isPointInPath(this.mouseX, this.mouseY)) {
+    drawHoverArea.bind(this)(_arr, offsetX, offsetY, areaScale)
+  }
 }
 
 export function initMap (el, width, height) {
@@ -69,15 +86,11 @@ export function renderMap () {
   this.area.features.forEach(subArea => {
     if (subArea.geometry.type === 'Polygon') {
       subArea.geometry.coordinates.forEach(shapeArr =>
-        drawSubArea.bind(this)(shapeArr, conf)
-      )
+        drawSubArea.bind(this)(shapeArr, conf))
     } else {
       subArea.geometry.coordinates.forEach(shapes =>
         shapes.forEach(shapeArr =>
-          drawSubArea.bind(this)(shapeArr, conf)
-        )
-      )
+          drawSubArea.bind(this)(shapeArr, conf)))
     }
   })
-  return this
 }
