@@ -1,4 +1,5 @@
 import { getRenderConf, getPoints } from './coordinate-utils'
+import { getAreaProps } from './utils'
 
 function getCanvasScale () {
   if (!('devicePixelRatio' in window)) return 1
@@ -52,10 +53,12 @@ function drawArea (arr, areaProps, {
     this.callLayer('onHoverArea', points, areaProps)
     // leave 与 enter 事件仅当变更 area 时触发
     if (this.hoverName !== areaProps.name) {
+      // 若变更且原 hoverName 存在
+      // 触发离开原 area 事件
       if (this.hoverName !== null) {
-        console.log('leave', this.hoverName)
+        this.callLayer('onLeaveArea', areaProps)
       }
-      console.log('enter', areaProps.name)
+      this.callLayer('onEnterArea', areaProps)
       this.hoverName = areaProps.name
     }
   }
@@ -71,14 +74,6 @@ function drawPath (ctx, points) {
   })
   ctx.closePath()
   ctx.fill()
-}
-
-// 调用 layer 回调
-export function callLayer () {
-  let args = Array.from(arguments)
-  let name = args.splice(0, 1)
-  if (!this.layer[name]) return
-  this.layer[name](this, ...args)
 }
 
 export function initMap (el, width, height) {
@@ -124,7 +119,10 @@ export function updateMap () {
   // 光标不在地图上但存在 hoverName 时
   // 表示此次渲染时光标离开地图
   if (!mouseOnMap && this.hoverName !== null) {
-    console.log('leave', this.hoverName)
+    this.callLayer(
+      'onLeaveArea',
+      getAreaProps(this.hoverName, this.geoJSON)
+    )
     this.hoverName = null
   }
 }

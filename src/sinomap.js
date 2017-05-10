@@ -1,4 +1,5 @@
-import { initMap, updateMap, callLayer } from './libs/renderer'
+import { initMap, updateMap } from './libs/renderer'
+import { callLayer } from './libs/utils'
 import base from './libs/base-conf'
 
 export default class Sinomap {
