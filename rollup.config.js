@@ -15,7 +15,7 @@ const bundleMapping = {
     dest: 'dist/sinomap.js'
   },
   choropleth: {
-    entry: 'layers/choropleth/index.js',
+    entry: 'src/layers/choropleth/index.js',
     moduleName: 'ChoroplethLayer',
     dest: 'dist/layers/choropleth.js'
   }
