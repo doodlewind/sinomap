@@ -32,7 +32,7 @@ export function getThresholds (data, level) {
         .map((x, i) => tmpData[step * (i + 1)])
 }
 
-export function drawArea (map, points, areaProps) {
+export function drawChoropleth (map, points, areaProps) {
   let value = parseInt(findValue(areaProps.name, this.data))
   if (!value) return
 
