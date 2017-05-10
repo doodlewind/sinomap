@@ -1,5 +1,5 @@
 // 根据 areaInfo 名称查找相应数据值
-function findValue (name, data) {
+export function findValue (name, data) {
   let result = null
   data.forEach(d => {
     if (d.name === name) result = d.value
@@ -33,11 +33,11 @@ export function getThresholds (data, level) {
 }
 
 export function drawChoropleth (map, points, areaProps) {
-  let value = parseInt(findValue(areaProps.name, this.data))
+  let value = parseInt(findValue(areaProps.name, this.conf.data))
   if (!value) return
 
   // 绘制底色
-  map.ctx.fillStyle = this.color
+  map.ctx.fillStyle = this.conf.color
   map.utils.drawPath(map.ctx, points)
 
   // 根据数据值返回遮罩颜色

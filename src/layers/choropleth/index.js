@@ -1,19 +1,27 @@
-import { drawChoropleth, getThresholds } from './utils'
+import { drawChoropleth, getThresholds, findValue } from './utils'
+import base from './conf'
 
 export default class ChoroplethLayer {
   constructor (conf) {
-    this.color = conf.color || 'cyan'
-    this.level = conf.level || 5
-    this.data = conf.data || []
-    this.thresholds = getThresholds(this.data, this.level) || []
+    this.conf = Object.assign({}, base, conf)
+    this.thresholds = getThresholds(this.conf.data, this.conf.level)
     this.drawChoropleth = drawChoropleth.bind(this)
-
-    this.onEnterArea = conf.onEnter
-      ? conf.onEnterArea.bind(this)
-      : function () {}
-    this.onLeaveArea = conf.onLeave
-      ? conf.onLeaveArea.bind(this)
-      : function () {}
+  }
+  onEnterArea (map, areaProps) {
+    let value = findValue(areaProps.name, this.conf.data)
+    this.conf.onEnterArea({
+      name: areaProps.name,
+      cp: areaProps.cp,
+      value: value
+    })
+  }
+  onLeaveArea (map, areaProps) {
+    let value = findValue(areaProps.name, this.conf.data)
+    this.conf.onLeaveArea({
+      name: areaProps.name,
+      cp: areaProps.cp,
+      value: value
+    })
   }
   // hover 时叠加浅色遮罩
   onHoverArea (map, points, areaProps) {

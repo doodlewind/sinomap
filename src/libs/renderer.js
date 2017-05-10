@@ -27,11 +27,6 @@ function initListener (canvas) {
   })
 }
 
-// function drawHoverArea (ctx, points, hoverColor) {
-//   ctx.fillStyle = hoverColor
-//   drawPath(ctx, points)
-// }
-
 // 根据区域地形及参数绘制 canvas
 // 返回鼠标是否停留在当前 area 的 boolean
 function drawArea (arr, areaProps, {
@@ -49,12 +44,12 @@ function drawArea (arr, areaProps, {
   let mouseOnArea = this.ctx.isPointInPath(this.mouseX, this.mouseY)
 
   if (mouseOnArea) {
-    // onHoverArea 在 hover 状态下每次重绘均需绘制
+    // onHoverArea 在 area 处于 hover 状态时每次更新均需触发
     this.callLayer('onHoverArea', points, areaProps)
     // leave 与 enter 事件仅当变更 area 时触发
     if (this.hoverName !== areaProps.name) {
-      // 若变更且原 hoverName 存在
-      // 触发离开原 area 事件
+      // 若 area 名称变更且原 hoverName 存在
+      // 表示当前状态为离开原 area
       if (this.hoverName !== null) {
         this.callLayer('onLeaveArea', areaProps)
       }

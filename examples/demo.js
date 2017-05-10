@@ -17,11 +17,23 @@ function getData () {
 
 // Sinomap 与 ChoroplethLayer 均通过 script 标签导入全局作用域
 getGeoJSON().then(china =>
-  getData().then(data =>
+  getData().then(data => {
+
+    const myLayer = new ChoroplethLayer({
+      data,
+      onEnterArea ({ name, cp, value }) {
+        console.log(name, cp, value)
+      },
+      onLeaveArea ({ name, cp, value }) {
+        console.log(name, cp, value)
+      }
+    })
+
     new Sinomap({
       el: '#map',
-      layer: new ChoroplethLayer({ data }),
+      layer: myLayer,
       geoJSON: china
     })
-  )
+
+  })
 )
