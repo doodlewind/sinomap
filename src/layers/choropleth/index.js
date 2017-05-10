@@ -1,4 +1,4 @@
-import { drawSubArea, getThresholds } from './utils'
+import { drawArea, getThresholds } from './utils'
 
 // hack 用户回调参数
 function onEnter (name, value) {
@@ -14,15 +14,15 @@ export default class ChoroplethLayer {
     this.level = conf.level || 5
     this.data = conf.data || []
     this.thresholds = getThresholds(this.data, this.level)
-    this.drawSubArea = drawSubArea.bind(this)
+    this.drawArea = drawArea.bind(this)
     this.onEnter = onEnter.bind(this)
     this.onLeave = onLeave.bind(this)
   }
   beforeArea () {
 
   }
-  afterSubArea (map, points, areaProps) {
-    this.drawSubArea(map, points, areaProps)
+  afterDrawArea (map, points, areaProps) {
+    this.drawArea(map, points, areaProps)
   }
   afterArea () {
 

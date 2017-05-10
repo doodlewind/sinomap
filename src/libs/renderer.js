@@ -22,7 +22,7 @@ function initListener (canvas) {
     let box = this.mapCanvas.getBoundingClientRect()
     this.mouseX = (e.clientX - box.left) * this.mapCanvas.width / box.width
     this.mouseY = (e.clientY - box.top) * this.mapCanvas.height / box.height
-    this.update()
+    this.updateMap()
   })
 }
 
@@ -32,7 +32,7 @@ function drawHoverArea (ctx, points, hoverColor) {
 }
 
 // 根据区域地形及参数绘制 canvas
-function drawSubArea (arr, areaProps, {
+function drawArea (arr, areaProps, {
     offsetX, offsetY, minX, minY, areaScale
   } = {}) {
   let points = getPoints(arr, {
@@ -44,12 +44,13 @@ function drawSubArea (arr, areaProps, {
   this.ctx.stroke()
 
   if (this.ctx.isPointInPath(this.mouseX, this.mouseY)) {
+    // todo
     drawHoverArea(this.ctx, points, this.hoverColor)
   }
 
-  let afterSubArea = this.layer.afterSubArea
-  if (afterSubArea) {
-    this.layer.afterSubArea(this, points, areaProps)
+  let afterDrawArea = this.layer.afterDrawArea
+  if (afterDrawArea) {
+    this.layer.afterDrawArea(this, points, areaProps)
   }
 }
 
@@ -71,6 +72,7 @@ export function initMap (el, width, height) {
 
   this.mouseX = 0
   this.mouseY = 0
+  this.hoverArea = null
   this.canvasScale = getCanvasScale()
   this.mapCanvas = createCanvas(this.width, this.height, this.canvasScale)
   this.ctx = this.mapCanvas.getContext('2d')
@@ -79,21 +81,21 @@ export function initMap (el, width, height) {
   initListener.bind(this)(this.mapCanvas)
 }
 
-export function renderMap () {
-  let conf = getRenderConf(this.area, this.width, this.height)
+export function updateMap () {
+  let conf = getRenderConf(this.geoJSON, this.width, this.height)
 
-  this.area.features.forEach(subArea => {
-    if (subArea.geometry.type === 'Polygon') {
-      subArea.geometry.coordinates.forEach(arr =>
-        drawSubArea.bind(this)(
-          arr, subArea.properties, conf
+  this.geoJSON.features.forEach(area => {
+    if (area.geometry.type === 'Polygon') {
+      area.geometry.coordinates.forEach(arr =>
+        drawArea.bind(this)(
+          arr, area.properties, conf
         )
       )
     } else {
-      subArea.geometry.coordinates.forEach(s =>
+      area.geometry.coordinates.forEach(s =>
         s.forEach(arr =>
-          drawSubArea.bind(this)(
-            arr, subArea.properties, conf
+          drawArea.bind(this)(
+            arr, area.properties, conf
           )
         )
       )

@@ -21,7 +21,7 @@ getGeoJSON().then(china =>
     new Sinomap({
       el: '#map',
       layer: new ChoroplethLayer({ data }),
-      area: china
+      geoJSON: china
     })
   )
 )
