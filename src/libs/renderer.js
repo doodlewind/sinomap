@@ -38,13 +38,13 @@ function drawSubArea (arr, areaProps, {
   let points = getPoints(arr, {
     minX, minY, offsetX, offsetY, areaScale, height: this.height
   })
-  this.ctx.fillStyle = this.style.color
-  this.ctx.strokeStyle = this.style.borderColor
+  this.ctx.fillStyle = this.color
+  this.ctx.strokeStyle = this.borderColor
   drawPath(this.ctx, points)
   this.ctx.stroke()
 
   if (this.ctx.isPointInPath(this.mouseX, this.mouseY)) {
-    drawHoverArea(this.ctx, points, this.style.hoverColor)
+    drawHoverArea(this.ctx, points, this.hoverColor)
   }
 
   let afterSubArea = this.layer.afterSubArea

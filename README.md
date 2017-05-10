@@ -7,7 +7,7 @@ TODO
 
 
 ## Demo
-TODO Clone 本项目并 `npm install` 后，运行示例：
+Clone 本项目并 `npm install` 后，运行示例：
 
 ``` text
 npm run example
@@ -43,5 +43,6 @@ npm run dev-choropleth # 色级统计图插件
 npm run build # 打包基础库及插件
 ```
 
-## License
-MIT
+
+## Credit
+TODO

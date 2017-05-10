@@ -8,12 +8,10 @@ export default class Sinomap {
   }
   init (conf) {
     // 初始化配置参数
-    conf.style = Object.assign({}, base.style, conf.style)
     conf = Object.assign({}, base, conf)
     Object.keys(conf).forEach(key => {
       this[key] = conf[key]
     })
-    this.layer = conf.layer || {}
     // 由配置参数初始化地图
     initMap.bind(this)()
   }
