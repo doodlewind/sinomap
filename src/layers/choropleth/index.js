@@ -7,28 +7,28 @@ export default class ChoroplethLayer {
     this.thresholds = getThresholds(this.conf.data, this.conf.level)
     this.drawChoropleth = drawChoropleth.bind(this)
   }
-  onEnterArea (map, areaProps) {
+  onAreaEnter (map, areaProps) {
     let value = findValue(areaProps.name, this.conf.data)
-    this.conf.onEnterArea({
+    this.conf.onAreaEnter({
       name: areaProps.name,
       cp: areaProps.cp,
       value: value
     })
   }
-  onLeaveArea (map, areaProps) {
+  onAreaLeave (map, areaProps) {
     let value = findValue(areaProps.name, this.conf.data)
-    this.conf.onLeaveArea({
+    this.conf.onAreaLeave({
       name: areaProps.name,
       cp: areaProps.cp,
       value: value
     })
   }
   // hover 时叠加浅色遮罩
-  onHoverArea (map, points, areaProps) {
+  onAreaHover (map, points, areaProps) {
     map.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'
     map.utils.drawPath(map.ctx, points)
   }
-  afterDrawArea (map, points, areaProps) {
+  afterAreaDraw (map, points, areaProps) {
     this.drawChoropleth(map, points, areaProps)
   }
 }

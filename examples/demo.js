@@ -24,10 +24,10 @@ getGeoJSON().then(china =>
   getData().then(data => {
     const myLayer = new ChoroplethLayer({
       data,
-      onEnterArea ({ name, cp, value }) {
+      onAreaEnter ({ name, cp, value }) {
         hoverText.innerText = `${name}: ${value} 万人`
       },
-      onLeaveArea ({ name, cp, value }) {
+      onAreaLeave ({ name, cp, value }) {
         hoverText.innerText = ''
       }
     })

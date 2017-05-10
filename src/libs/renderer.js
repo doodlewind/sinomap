@@ -39,21 +39,21 @@ function drawArea (arr, areaProps, {
   this.ctx.strokeStyle = this.borderColor
   drawPath(this.ctx, points)
   this.ctx.stroke()
-  this.callLayer('afterDrawArea', points, areaProps)
+  this.callLayer('afterAreaDraw', points, areaProps)
 
   let mouseOnArea = this.ctx.isPointInPath(this.mouseX, this.mouseY)
 
   if (mouseOnArea) {
-    // onHoverArea 在 area 处于 hover 状态时每次更新均需触发
-    this.callLayer('onHoverArea', points, areaProps)
+    // onAreaHover 在 area 处于 hover 状态时每次更新均需触发
+    this.callLayer('onAreaHover', points, areaProps)
     // leave 与 enter 事件仅当变更 area 时触发
     if (this.hoverName !== areaProps.name) {
       // 若 area 名称变更且原 hoverName 存在
       // 表示当前状态为离开原 area
       if (this.hoverName !== null) {
-        this.callLayer('onLeaveArea', areaProps)
+        this.callLayer('onAreaLeave', areaProps)
       }
-      this.callLayer('onEnterArea', areaProps)
+      this.callLayer('onAreaEnter', areaProps)
       this.hoverName = areaProps.name
     }
   }
@@ -115,7 +115,7 @@ export function updateMap () {
   // 表示此次渲染时光标离开地图
   if (!mouseOnMap && this.hoverName !== null) {
     this.callLayer(
-      'onLeaveArea',
+      'onAreaLeave',
       getAreaProps(this.hoverName, this.geoJSON)
     )
     this.hoverName = null
