@@ -41,3 +41,5 @@ export default class BubbleLayer {
     this.conf.onBubbleLeave(bubble)
   }
 }
+
+if (typeof module !== 'undefined') module.exports = BubbleLayer

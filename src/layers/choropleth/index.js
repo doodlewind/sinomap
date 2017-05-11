@@ -32,3 +32,5 @@ export default class ChoroplethLayer {
     this.drawChoropleth(map, points, areaProps)
   }
 }
+
+if (typeof module !== 'undefined') module.exports = ChoroplethLayer
