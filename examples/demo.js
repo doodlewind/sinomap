@@ -58,7 +58,6 @@ Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
 
   new Sinomap({
     el: '#map',
-    layer: bubble,
     layers: [choropleth, bubble],
     geoJSON: china
   })
