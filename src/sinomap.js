@@ -16,3 +16,5 @@ export default class Sinomap {
     this.updateMap()
   }
 }
+
+if (typeof module !== 'undefined') module.exports = Sinomap
