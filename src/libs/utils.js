@@ -2,8 +2,10 @@
 export function callLayer () {
   let args = Array.from(arguments)
   let name = args.splice(0, 1)
-  if (!this.layer[name]) return
-  this.layer[name](this, ...args)
+  this.layers.forEach(layer => {
+    if (!layer[name]) return
+    layer[name](this, ...args)
+  })
 }
 
 export function getAreaProps (name, geoJSON) {
