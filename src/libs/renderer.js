@@ -1,10 +1,10 @@
-import { getRenderConf, getPoints } from './coordinate-utils'
+import { getRenderConf, getPoints, getPoint } from './coordinate-utils'
 import { getAreaProps } from './utils'
 
 function getCanvasScale () {
-  if (!('devicePixelRatio' in window)) return 1
-  return window.devicePixelRatio > 1
-    ? window.devicePixelRatio : 1
+  const ratio = 'devicePixelRatio'
+  if (!(ratio in window)) return 1
+  return window[ratio] > 1 ? window[ratio] : 1
 }
 
 function createCanvas (width, height, scaleFactor) {
@@ -29,12 +29,17 @@ function initListener (canvas) {
 
 // 根据区域地形及参数绘制 canvas
 // 返回鼠标是否停留在当前 area 的 boolean
-function drawArea (arr, areaProps, {
-    offsetX, offsetY, minX, minY, areaScale
-  } = {}) {
-  let points = getPoints(arr, {
-    minX, minY, offsetX, offsetY, areaScale, height: this.height
-  })
+function drawArea (arr, areaProps) {
+  let conf = this.renderConf
+  let points = getPoints(
+    arr,
+    conf.minX,
+    conf.minY,
+    conf.offsetX,
+    conf.offsetY,
+    conf.areaScale,
+    this.height
+  )
   this.ctx.fillStyle = this.color
   this.ctx.strokeStyle = this.borderColor
   drawPath(this.ctx, points)
@@ -60,6 +65,20 @@ function drawArea (arr, areaProps, {
   return mouseOnArea
 }
 
+// 将 [lat, lng] 经纬度坐标转换为当前 canvas 的 [x, y] 坐标
+function convert (coordinate) {
+  let conf = this.renderConf
+  return getPoint(
+    coordinate,
+    conf.minX,
+    conf.minY,
+    conf.offsetX,
+    conf.offsetY,
+    conf.areaScale,
+    this.height
+  )
+}
+
 // 由 [[x, y]...] 坐标数组绘制单个 Path
 function drawPath (ctx, points) {
   points.forEach((p, i) => {
@@ -82,13 +101,17 @@ export function initMap (el, width, height) {
   this.canvasScale = getCanvasScale()
   this.mapCanvas = createCanvas(this.width, this.height, this.canvasScale)
   this.ctx = this.mapCanvas.getContext('2d')
-  this.utils = { drawPath }
+  this.utils = {
+    drawPath,
+    convert: convert.bind(this)
+  }
   target.appendChild(this.mapCanvas)
   initListener.bind(this)(this.mapCanvas)
 }
 
 export function updateMap () {
-  let conf = getRenderConf(this.geoJSON, this.width, this.height)
+  const _drawArea = drawArea.bind(this)
+  this.renderConf = getRenderConf(this.geoJSON, this.width, this.height)
   // 任意子 area 存在光标时即将此 flag 置为真
   let mouseOnMap = false
 
@@ -96,16 +119,12 @@ export function updateMap () {
     // 区分绘制区域为单个闭合多边形或不连通图的情形
     if (area.geometry.type === 'Polygon') {
       area.geometry.coordinates.forEach(arr => {
-        if (drawArea.bind(this)(arr, area.properties, conf)) {
-          mouseOnMap = true
-        }
+        if (_drawArea(arr, area.properties)) mouseOnMap = true
       })
     } else {
       area.geometry.coordinates.forEach(s =>
         s.forEach(arr => {
-          if (drawArea.bind(this)(arr, area.properties, conf)) {
-            mouseOnMap = true
-          }
+          if (_drawArea(arr, area.properties)) mouseOnMap = true
         })
       )
     }

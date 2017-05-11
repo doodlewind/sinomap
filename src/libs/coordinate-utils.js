@@ -83,11 +83,34 @@ export function getRenderConf (geoJSON, canvasW, canvasH) {
   }
 }
 
+// 根据经纬度坐标及 canvas 绘图参数
+// 返回单个 canvas 坐标
+export function getPoint (
+    coordinate,
+    minX,
+    minY,
+    offsetX,
+    offsetY,
+    areaScale,
+    height
+  ) {
+  return moveToOrigin(minX, minY, [coordinate]).map(p => [
+    p[0] * areaScale + offsetX,
+    height - p[1] * areaScale - offsetY
+  ])[0]
+}
+
 // 根据经纬度数组及 canvas 绘图参数
 // 返回 canvas 坐标数组
-export function getPoints (arr, {
-    minX, minY, offsetX, offsetY, areaScale, height
-  } = {}) {
+export function getPoints (
+    arr,
+    minX,
+    minY,
+    offsetX,
+    offsetY,
+    areaScale,
+    height
+  ) {
   return moveToOrigin(minX, minY, arr).map(p => [
     p[0] * areaScale + offsetX,
     height - p[1] * areaScale - offsetY
