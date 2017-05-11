@@ -15,7 +15,7 @@
     "build-choropleth": "cross-env NODE_ENV=production bundle=choropleth rollup -c",
     "build-bubble": "cross-env NODE_ENV=production bundle=bubble rollup -c",
     "build": "npm run build-sinomap && npm run build-choropleth && npm run build-bubble",
-    "example": "http-server . -p 10006"
+    "example": "http-server . -s -p 10006"
   },
   "repository": "https://github.com/doodlewind/sinomap",
   "devDependencies": {
