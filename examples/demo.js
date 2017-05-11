@@ -28,6 +28,9 @@ function getCity () {
   })
 }
 
+const hoverText = document.getElementById('hover-text')
+const bubbleText = document.getElementById('bubble-hover-text')
+
 Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
   let china = values[0]
   let population = values[1]
@@ -43,7 +46,15 @@ Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
       hoverText.innerText = ''
     }
   })
-  const bubble = new BubbleLayer({ data: city })
+  const bubble = new BubbleLayer({
+    data: city,
+    onBubbleEnter (bubble) {
+      bubbleText.innerText = `${bubble.name}市`
+    },
+    onBubbleLeave (bubble) {
+      bubbleText.innerText = ''
+    }
+  })
 
   new Sinomap({
     el: '#map',
@@ -52,5 +63,3 @@ Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
     geoJSON: china
   })
 })
-
-const hoverText = document.getElementById('hover-text')
