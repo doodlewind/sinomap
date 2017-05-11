@@ -35,8 +35,9 @@ Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
 
   const choropleth = new ChoroplethLayer({
     data: population,
+    level: 10,
     onAreaEnter ({ name, cp, value }) {
-      hoverText.innerText = `${name}: ${value} 万人`
+      hoverText.innerText = `${name}: ${value} 万人 / 万平方公里`
     },
     onAreaLeave ({ name, cp, value }) {
       hoverText.innerText = ''
