@@ -19,10 +19,10 @@ function getData () {
 
 const hoverText = document.getElementById('hover-text')
 
-// Sinomap 与 ChoroplethLayer 均通过 script 标签导入全局作用域
+// Sinomap 与 Layer 均通过 script 标签导入全局作用域
 getGeoJSON().then(china =>
   getData().then(data => {
-    const myLayer = new ChoroplethLayer({
+    const choropleth = new ChoroplethLayer({
       data,
       onAreaEnter ({ name, cp, value }) {
         hoverText.innerText = `${name}: ${value} 万人`
@@ -31,10 +31,11 @@ getGeoJSON().then(china =>
         hoverText.innerText = ''
       }
     })
+    const bubble = new BubbleLayer({ color: 'red' })
 
     new Sinomap({
       el: '#map',
-      layer: myLayer,
+      layer: bubble,
       geoJSON: china
     })
   })

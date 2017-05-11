@@ -120,4 +120,6 @@ export function updateMap () {
     )
     this.hoverName = null
   }
+
+  this.callLayer('afterMapDraw')
 }

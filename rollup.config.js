@@ -18,6 +18,11 @@ const bundleMapping = {
     entry: 'src/layers/choropleth/index.js',
     moduleName: 'ChoroplethLayer',
     dest: 'dist/layers/choropleth.js'
+  },
+  bubble: {
+    entry: 'src/layers/bubble/index.js',
+    moduleName: 'BubbleLayer',
+    dest: 'dist/layers/bubble.js'
   }
 }
 
