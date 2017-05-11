@@ -1,4 +1,6 @@
 export default {
   color: 'lightcoral',
-  data: []
+  data: [],
+  onBubbleEnter () {},
+  onBubbleLeave () {}
 }
