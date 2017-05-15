@@ -18,13 +18,17 @@ function createCanvas (width, height, scaleFactor) {
   return canvas
 }
 
+function updateHandler (e) {
+  let box = this.mapCanvas.getBoundingClientRect()
+  this.mouseX = (e.clientX - box.left) * this.mapCanvas.width / box.width
+  this.mouseY = (e.clientY - box.top) * this.mapCanvas.height / box.height
+  this.updateMap()
+}
+
 function initListener (canvas) {
-  canvas.addEventListener('mousemove', e => {
-    let box = this.mapCanvas.getBoundingClientRect()
-    this.mouseX = (e.clientX - box.left) * this.mapCanvas.width / box.width
-    this.mouseY = (e.clientY - box.top) * this.mapCanvas.height / box.height
-    this.updateMap()
-  })
+  ['mousemove', 'click'].forEach(e =>
+    window.addEventListener(e, updateHandler.bind(this), false)
+  )
 }
 
 // 根据区域地形及参数绘制 canvas
