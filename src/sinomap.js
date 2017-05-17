@@ -1,4 +1,4 @@
-import { initMap, updateMap } from './libs/renderer'
+import { initMap, updateMap } from './libs/canvas-utils'
 import { callLayer } from './libs/utils'
 import base from './libs/base-conf'
 
