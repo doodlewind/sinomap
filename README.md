@@ -107,7 +107,7 @@ new Sinomap({
 #### map.utils.convert([lat, lng])
 输入一个经纬度数组，返回当前 canvas 中该经纬度的 `[x, y]` 坐标数组。
 
-### map.utils.drawPath(ctx, points)
+#### map.utils.drawPath(ctx, points)
 根据形如 `[[x, y]...]` 的坐标数组，绘制一个多边形 Path。
 
 一个最简单的 Layer 示例如下（将当前 Hover Area 绘制为黑色）：
