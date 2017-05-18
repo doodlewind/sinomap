@@ -81,8 +81,51 @@ new Sinomap({
 ```
 
 ### 开发 Layer
-TODO
+一个示例的 Layer 就是一个独立的 Class。Sinomap 提供了多个在特定时机将当前 canvas 交由插件绘图的回调 API，只需在插件 Class 中提供相应名称的类方法，Sinomap 即会在相应时机调用插件绘图。若存在多个插件，则每个回调 API 触发时，逐个调用插件的相应接口（插件不需要的回调可以不在插件 Class 中提供）。可用的 API 如下：
 
+#### afterAreaDraw (map, points, areaProps)
+当 Area 完成绘制后触发。在全国地图中，一个省份即为一个 Area。同样地，在省级地图中，一个城市即为一个 Area。
+
+* `map` 为当前 Sinomap 实例的 `this` 上下文，当前示例对应的 canvas 上下文为 `map.ctx`
+* `points` 为当前 Area 地形对应的 canvas 坐标数组，形如 `[[x1, y1], [x2, y2]...]`
+* `areaProps` 为当前 Area 的 GeoJSON 信息，包括名称 `name` / 坐标经纬度 `cp` 及 `id` 等（该属性中仅包含地形数据，相应的可视化数据应保存在 Layer 实例中，由 Layer 根据 `name` 等字段查找出数据后进行相应的可视化绘制）。
+
+#### onAreaHover (map, points, areaProps)
+在光标 Hover 至某个 Area 时被触发。
+
+#### onAreaEnter (map, areaProps)
+在光标离开某个 Area 时被触发。
+
+#### onAreaLeave (map, areaProps)
+在光标离开某个 Area 时被触发。
+
+#### afterMapDraw (map)
+在一次重绘结束时被触发。Hover 状态下每个 mousemove 事件均会触发重绘。
+
+除上述方法外，Sinomap 还以 utils 的形式，提供了便于插件绘图的辅助函数，以 `map.utils` 的形式提供给插件使用：
+
+#### map.utils.convert([lat, lng])
+输入一个经纬度数组，返回当前 canvas 中该经纬度的 `[x, y]` 坐标数组。
+
+### map.utils.drawPath(ctx, points)
+根据形如 `[[x, y]...]` 的坐标数组，绘制一个多边形 Path。
+
+一个最简单的 Layer 示例如下（将当前 Hover Area 绘制为黑色）：
+
+``` js
+class MyLayer {
+  onAreaHover (map, points, areaProps) {
+    map.ctx.fillStyle = 'black'
+    map.utils.drawPath(map.ctx, points)
+  }
+}
+
+const myLayer = new MyLayer()
+new Sinomap({
+  // ...
+  layers: [myLayer]
+})
+```
 
 ## 开发
 
