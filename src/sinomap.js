@@ -12,7 +12,7 @@ export default class Sinomap {
       this[key] = conf[key]
     })
 
-    initMap.bind(this)()
+    initMap.call(this)
     this.updateMap()
   }
 }

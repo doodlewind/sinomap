@@ -116,3 +116,9 @@ export function getPoints (
     height - p[1] * areaScale - offsetY
   ])
 }
+
+// 根据 name 查询 geoJSON 中相应字段
+export function getAreaProps (name, geoJSON) {
+  let tmp = geoJSON.features.filter(area => area.properties.name === name)
+  if (tmp.length) return tmp[0].properties
+}

@@ -1,5 +1,9 @@
-import { getRenderConf, getPoints, getPoint } from './coordinate-utils'
-import { getAreaProps } from './utils'
+import {
+  getRenderConf,
+  getPoints,
+  getPoint,
+  getAreaProps
+} from './coordinate-utils'
 
 function getCanvasScale () {
   const ratio = 'devicePixelRatio'
