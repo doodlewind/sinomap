@@ -1,14 +1,19 @@
 import base from './conf'
+import { drawCircle } from './utils'
 
 export default class TravelLayer {
   constructor (conf) {
     this.conf = Object.assign({}, base, conf)
     this.animate = false
-    console.log(this)
   }
   afterMapDraw (map) {
     map.ctx.fillStyle = 'red'
-    map.ctx.fillRect(0, 0, 10, 10)
+    this.conf.data.forEach(line => {
+      const [fromX, fromY] = map.utils.convert(line.from.coordinate)
+      const [toX, toY] = map.utils.convert(line.to.coordinate)
+      drawCircle(map.ctx, fromX, fromY, line.from.size)
+      drawCircle(map.ctx, toX, toY, line.to.size)
+    })
   }
 }
 
