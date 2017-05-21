@@ -1,5 +1,6 @@
 export default class TravelLayer {
-  constructor () {
+  constructor (conf) {
+    console.log(conf)
     this.animate = false
   }
   afterMapDraw (map) {

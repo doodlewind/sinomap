@@ -10,36 +10,26 @@ function getArea () {
   })
 }
 
-// 用于绘制城市气泡地图的 Demo 数据
-function getCity () {
+// 用于绘制迁徙图的 Demo 数据
+function getTravel () {
   return new Promise((resolve, reject) => {
-    fetch('../../resources/demo-data/city.json').then(resp =>
+    fetch('../../resources/demo-data/city-travel.json').then(resp =>
       resp.json().then(data => resolve(data))
     )
   })
 }
 
-const bubbleText = document.getElementById('bubble-hover-text')
+Promise.all([getArea(), getTravel()]).then(values => {
+  const china = values[0]
+  const travelData = values[1]
 
-Promise.all([getArea(), getCity()]).then(values => {
-  let china = values[0]
-  let city = values[1]
-
-  const bubble = new BubbleLayer({
-    data: city,
-    onBubbleEnter (bubble) {
-      bubbleText.innerText = `${bubble.name}市`
-    },
-    onBubbleLeave (bubble) {
-      bubbleText.innerText = ''
-    }
+  const travel = new TravelLayer({
+    data: travelData
   })
-
-  const travel = new TravelLayer()
 
   new Sinomap({
     el: '#map',
-    layers: [bubble, travel],
+    layers: [travel],
     geoJSON: china
   })
 })
