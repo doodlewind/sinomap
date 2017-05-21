@@ -33,9 +33,18 @@ function updateHandler (e) {
 }
 
 function initListener (canvas) {
-  ['mousemove', 'click'].forEach(e =>
+  const _this = this
+  const eventArr = ['mousemove', 'click']
+  eventArr.forEach(e =>
     win.addEventListener(e, updateHandler.bind(this), false)
   )
+  const hasAnimate = this.layers.some(layer => layer.animate)
+  if (hasAnimate) {
+    win.requestAnimationFrame(function animate () {
+      _this.updateMap()
+      win.requestAnimationFrame(animate)
+    })
+  }
 }
 
 // 根据区域地形及参数绘制 canvas
@@ -117,7 +126,7 @@ export function initMap (el, width, height) {
     convert: convert.bind(this)
   }
   target.appendChild(this.mapCanvas)
-  initListener.bind(this)(this.mapCanvas)
+  initListener.call(this, this.mapCanvas)
 }
 
 export function updateMap () {
