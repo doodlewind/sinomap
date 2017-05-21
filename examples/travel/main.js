@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-new */
 
-// 地形 GeoJSON 数据
+// fetch GeoJSON data
 function getArea () {
   return new Promise((resolve, reject) => {
     fetch('../../resources/china.json').then(resp =>
@@ -10,7 +10,7 @@ function getArea () {
   })
 }
 
-// 用于绘制迁徙图的 Demo 数据
+// fetch demo travel layer data
 function getTravel () {
   return new Promise((resolve, reject) => {
     fetch('../../resources/demo-data/city-travel.json').then(resp =>

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-new */
 
-// 地形 GeoJSON 数据
+// fetch GeoJSON data
 function getArea () {
   return new Promise((resolve, reject) => {
     fetch('../resources/china.json').then(resp =>
@@ -10,7 +10,7 @@ function getArea () {
   })
 }
 
-// 用于绘制分色地图的 Demo 数据
+// fetch demo choropleth layer data
 function getPopulation () {
   return new Promise((resolve, reject) => {
     fetch('../resources/demo-data/china-population.json').then(resp =>
@@ -19,7 +19,7 @@ function getPopulation () {
   })
 }
 
-// 用于绘制城市气泡地图的 Demo 数据
+// fetch demo bubble layer data
 function getCity () {
   return new Promise((resolve, reject) => {
     fetch('../resources/demo-data/city.json').then(resp =>
@@ -32,9 +32,9 @@ const hoverText = document.getElementById('hover-text')
 const bubbleText = document.getElementById('bubble-hover-text')
 
 Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
-  let china = values[0]
-  let population = values[1]
-  let city = values[2]
+  const china = values[0]
+  const population = values[1]
+  const city = values[2]
 
   const choropleth = new ChoroplethLayer({
     data: population,
