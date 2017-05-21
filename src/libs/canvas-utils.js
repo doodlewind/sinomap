@@ -5,14 +5,17 @@ import {
   getAreaProps
 } from './coordinate-utils'
 
+const win = window
+const doc = document
+
 function getCanvasScale () {
   const ratio = 'devicePixelRatio'
-  if (!(ratio in window)) return 1
-  return window[ratio] > 1 ? window[ratio] : 1
+  if (!(ratio in win)) return 1
+  return win[ratio] > 1 ? win[ratio] : 1
 }
 
 function createCanvas (width, height, scaleFactor) {
-  const canvas = document.createElement('canvas')
+  const canvas = doc.createElement('canvas')
 
   canvas.width = width * scaleFactor
   canvas.height = height * scaleFactor
@@ -31,7 +34,7 @@ function updateHandler (e) {
 
 function initListener (canvas) {
   ['mousemove', 'click'].forEach(e =>
-    window.addEventListener(e, updateHandler.bind(this), false)
+    win.addEventListener(e, updateHandler.bind(this), false)
   )
 }
 
@@ -100,7 +103,7 @@ function drawPath (ctx, points) {
 
 export function initMap (el, width, height) {
   const target = typeof this.el === 'string'
-    ? document.querySelector(this.el) : this.el
+    ? doc.querySelector(this.el) : this.el
   if (!target) throw new Error('[Sinomap] Target element not found.')
 
   this.mouseX = 0
