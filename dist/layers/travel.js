@@ -1,0 +1,1 @@
+var TravelLayer=function(){"use strict";var n=function(n,t){if(!(n instanceof t))throw new TypeError("Cannot call a class as a function")},t=function t(){n(this,t),this.animate=!0};return"undefined"!=typeof module&&(module.exports=t),t}();

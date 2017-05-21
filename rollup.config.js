@@ -23,6 +23,11 @@ const bundleMapping = {
     entry: 'src/layers/bubble/index.js',
     moduleName: 'BubbleLayer',
     dest: 'dist/layers/bubble.js'
+  },
+  travel: {
+    entry: 'src/layers/travel/index.js',
+    moduleName: 'TravelLayer',
+    dest: 'dist/layers/travel.js'
   }
 }
 
