@@ -1,5 +1,5 @@
 import base from './conf'
-import { drawCircle } from './utils'
+import { drawCircle, drawLine } from './utils'
 
 export default class TravelLayer {
   constructor (conf) {
@@ -13,6 +13,7 @@ export default class TravelLayer {
       const [toX, toY] = map.utils.convert(line.to.coordinate)
       drawCircle(map.ctx, fromX, fromY, line.from.size)
       drawCircle(map.ctx, toX, toY, line.to.size)
+      drawLine(map.ctx, fromX, fromY, toX, toY)
     })
   }
 }
