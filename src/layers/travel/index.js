@@ -1,6 +1,10 @@
 export default class TravelLayer {
   constructor () {
-    this.animate = true
+    this.animate = false
+  }
+  afterMapDraw (map) {
+    map.ctx.fillStyle = 'red'
+    map.ctx.fillRect(0, 0, 10, 10)
   }
 }
 

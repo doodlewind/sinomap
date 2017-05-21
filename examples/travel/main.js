@@ -13,7 +13,7 @@ function getArea () {
 // 用于绘制城市气泡地图的 Demo 数据
 function getCity () {
   return new Promise((resolve, reject) => {
-    fetch('../../resources/city.json').then(resp =>
+    fetch('../../resources/demo-data/city.json').then(resp =>
       resp.json().then(data => resolve(data))
     )
   })
