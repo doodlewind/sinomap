@@ -1,28 +1,22 @@
-{
-  "lineColor": "rgba(255,255,255,.5)",
-  "lineWidth": 1,
-  "speed": 1,
-  "pointColor": "rgba(0,0,255,.2)",
-  "lines": [
-    {
-      "from": { "name": "合肥", "coordinate": [117.2461, 32.0361], "size": 2 },
-      "to": { "name": "武汉", "coordinate": [112.2363, 31.1572], "size": 2 }
-    },
-    {
-      "from": { "name": "武汉", "coordinate": [112.2363, 31.1572], "size": 2 },
-      "to": { "name": "长沙", "coordinate": [111.5332, 27.3779], "size": 2 }
-    },
-    {
-      "from": { "name": "长沙", "coordinate": [112.2363, 31.1572], "size": 2 },
-      "to": { "name": "成都", "coordinate": [102.9199, 30.1904], "size": 2 }
-    },
-    {
-      "from": { "name": "成都", "coordinate": [102.9199, 30.1904], "size": 2 },
-      "to": { "name": "重庆", "coordinate": [107.7539, 30.1904], "size": 2 }
-    },
-    {
-      "from": { "name": "重庆", "coordinate": [107.7539, 30.1904], "size": 2 },
-      "to": { "name": "厦门", "coordinate": [118.0667, 24.4333], "size": 2 }
-    }
-  ]
-}
+[
+  {
+    "from": { "name": "合肥", "coordinate": [117.2461, 32.0361], "size": 2 },
+    "to": { "name": "武汉", "coordinate": [112.2363, 31.1572], "size": 2 }
+  },
+  {
+    "from": { "name": "武汉", "coordinate": [112.2363, 31.1572], "size": 2 },
+    "to": { "name": "长沙", "coordinate": [111.5332, 27.3779], "size": 2 }
+  },
+  {
+    "from": { "name": "长沙", "coordinate": [112.2363, 31.1572], "size": 2 },
+    "to": { "name": "成都", "coordinate": [102.9199, 30.1904], "size": 2 }
+  },
+  {
+    "from": { "name": "成都", "coordinate": [102.9199, 30.1904], "size": 2 },
+    "to": { "name": "重庆", "coordinate": [107.7539, 30.1904], "size": 2 }
+  },
+  {
+    "from": { "name": "重庆", "coordinate": [107.7539, 30.1904], "size": 2 },
+    "to": { "name": "厦门", "coordinate": [118.0667, 24.4333], "size": 2 }
+  }
+]

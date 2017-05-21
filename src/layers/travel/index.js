@@ -1,7 +1,10 @@
+import base from './conf'
+
 export default class TravelLayer {
   constructor (conf) {
-    console.log(conf)
+    this.conf = Object.assign({}, base, conf)
     this.animate = false
+    console.log(this)
   }
   afterMapDraw (map) {
     map.ctx.fillStyle = 'red'
