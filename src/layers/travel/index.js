@@ -1,5 +1,9 @@
 import base from './conf'
-import { drawCircle, drawLine } from './utils'
+import {
+  drawCircle,
+  drawLine,
+  drawBezier
+} from './utils'
 
 export default class TravelLayer {
   constructor (conf) {
@@ -13,7 +17,15 @@ export default class TravelLayer {
       const [toX, toY] = map.utils.convert(line.to.coordinate)
       drawCircle(map.ctx, fromX, fromY, line.from.size)
       drawCircle(map.ctx, toX, toY, line.to.size)
+
+      map.ctx.strokeStyle = 'blue'
       drawLine(map.ctx, fromX, fromY, toX, toY)
+      drawBezier(
+        map.ctx,
+        [20, 20],
+        [40, 60],
+        [100, 100]
+      )
     })
   }
 }
