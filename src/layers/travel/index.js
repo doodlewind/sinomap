@@ -1,30 +1,43 @@
 import base from './conf'
 import {
+  getCurveArgs,
   drawCircle,
-  drawLine,
-  drawBezier
+  drawBezier,
+  drawCurve
 } from './utils'
 
 export default class TravelLayer {
   constructor (conf) {
     this.conf = Object.assign({}, base, conf)
+    // this.animate = true
     this.animate = false
+    this.count = 0
   }
   afterMapDraw (map) {
+    this.count++
     map.ctx.fillStyle = 'red'
+
+    this.conf.data = this.conf.data.map(line =>
+      getCurveArgs(line, map.utils.convert)
+    )
     this.conf.data.forEach(line => {
       const [fromX, fromY] = map.utils.convert(line.from.coordinate)
       const [toX, toY] = map.utils.convert(line.to.coordinate)
       drawCircle(map.ctx, fromX, fromY, line.from.size)
       drawCircle(map.ctx, toX, toY, line.to.size)
-
       map.ctx.strokeStyle = 'blue'
-      drawLine(map.ctx, fromX, fromY, toX, toY)
       drawBezier(
         map.ctx,
-        [20, 20],
-        [40, 60],
-        [100, 100]
+        line.points[0],
+        line.points[1],
+        line.points[2]
+      )
+      drawCurve(
+        map.ctx,
+        line.points[0],
+        line.points[1],
+        line.points[2],
+        this.count
       )
     })
   }
