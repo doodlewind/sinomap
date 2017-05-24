@@ -6,14 +6,17 @@ function getCtrlPoint ([x0, y0], [x1, y1], k = 1) {
   const r1 = r0 / 2
 
   const theta1 = theta0 + Math.atan(Math.PI / 12 * k)
-  return [r1 * Math.cos(theta1), r1 * Math.sin(theta1)]
+  const base = [r1 * Math.cos(theta1), r1 * Math.sin(theta1)]
+  base[0] = x1 > x0 ? x0 + base[0] : x0 - base[0]
+  base[1] = y1 > y0 ? y0 + base[1] : y1 - base[1]
+  return base
 }
 
 export function getCurveArgs (line, convertFn, k = 1) {
   const p0 = convertFn(line.from.coordinate)
   const p2 = convertFn(line.to.coordinate)
-  const p1 = getCtrlPoint(p0, p2)
-  console.log(p0, p1, p2)
+  const p1 = getCtrlPoint(p0, p2, 2)
+  // console.log([p0, p1, p2])
   line.points = [p0, p1, p2]
   return line
 }
