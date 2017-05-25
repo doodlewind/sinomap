@@ -1,22 +1,25 @@
-function getCtrlPoint ([x0, y0], [x1, y1], k = 1) {
+function getCtrlPoint ([x0, y0], [x1, y1], k) {
   const r0 = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2))
   const theta0 = x1 !== x0
     ? Math.atan((y1 - y0) / (x1 - x0))
     : Math.PI / 2
   const r1 = r0 / 2
 
-  const theta1 = theta0 + Math.atan(Math.PI / 12 * k)
+  const theta1 = theta0 + Math.atan(Math.PI / 6 * k)
   const base = [r1 * Math.cos(theta1), r1 * Math.sin(theta1)]
-  base[0] = x1 > x0 ? x0 + base[0] : x0 - base[0]
-  base[1] = y1 > y0 ? y0 + base[1] : y1 - base[1]
+  base[0] = x1 > x0
+    ? x0 + Math.abs(base[0])
+    : x0 - Math.abs(base[0])
+  base[1] = y1 > y0
+    ? y0 + Math.abs(base[1])
+    : y0 - Math.abs(base[1])
   return base
 }
 
 export function getCurveArgs (line, convertFn, k = 1) {
   const p0 = convertFn(line.from.coordinate)
   const p2 = convertFn(line.to.coordinate)
-  const p1 = getCtrlPoint(p0, p2, 2)
-  // console.log([p0, p1, p2])
+  const p1 = getCtrlPoint(p0, p2, k)
   line.points = [p0, p1, p2]
   return line
 }

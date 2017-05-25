@@ -18,7 +18,7 @@ export default class TravelLayer {
     map.ctx.fillStyle = 'red'
 
     this.conf.data = this.conf.data.map(line =>
-      getCurveArgs(line, map.utils.convert)
+      getCurveArgs(line, map.utils.convert, 1)
     )
     this.conf.data.forEach(line => {
       const [fromX, fromY] = map.utils.convert(line.from.coordinate)
