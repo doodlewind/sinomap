@@ -2,13 +2,37 @@
 插件化的超轻量中国地图库
 
 
-## Features
+## 特性
 * 基于 canvas 的地形数据渲染
 * 小于 5KB gzipped 的尺寸
 * 插件化的 Layer 层，提供 Hover API 支持
 
 
-## API
+## 上手
+请首先将 Sinomap 作为依赖安装：
+
+```
+npm install --save sinomap
+```
+
+而后即可在项目中使用。注意在导入 Sinomap 库本身时并不带地形数据，但其附带了中国省份的地形数据 GeoJSON 资源以便于选择性导入：
+
+``` js
+import Sinomap from 'sinomap'
+
+// 通用的 GeoJSON 地形数据资源
+import china from 'sinomap/resources/china.json'
+```
+
+而后即可通过新建 Sinomap 实例的方式，初始化地图了：
+
+``` js
+new Sinomap({ el: '#app', geoJSON: china })
+```
+
+
+## 示例
+你可以基于 Sinomap 定制出各类不同地图可视化效果。以下是若干实现了基本效果的示例：
 
 ### Basic
 不带交互的基础地图：
@@ -18,17 +42,15 @@ import Sinomap from 'sinomap'
 import china from 'sinomap/resources/china.json'
 
 new Sinomap({
-  el: '#map',          // 目标 DOM 元素，支持传入选择器字符串与 DOM Node 对象
-  geoJSON: china,      // 地形数据
-  width: 600,          // 宽度
-  height: 400,         // 高度
-  color: 'red',        // 地图底色
-  borderColor: 'black' // 边框颜色
+  el: '#map',
+  geoJSON: china,
+  color: 'red',
+  borderColor: 'black'
 })
 ```
 
 ### Layer
-Sinomap 通过将数据传入 Layer 的方式实现可视化效果。
+Sinomap 通过将数据传入 Layer 的方式实现可视化效果。不同 Layer 具有不同数据格式。
 
 ``` js
 // ...
@@ -38,15 +60,15 @@ import BubbleLayer from 'sinomap/dist/layers/bubble'
 // 色级统计图 Layer
 const choropleth = new ChoroplethLayer({
   color: 'red', // 基础底色
-  level: 5,     // 由底色衍生的分色种类数
+  level: 5, // 由底色衍生的分色种类数
   data: [
     { name: '北京', value: 1989 },
     { name: '江苏', value: 1926 }
   ],
   // 光标移入区域时触发
-  // name 为 GeoJSON 中区域名
-  // cp 为 GeoJSON 中区域 capital 坐标
-  // value 为 Layer 的 data 数据
+  // `name` 为 GeoJSON 中区域名
+  // `cp` 为 GeoJSON 中区域 capital 坐标
+  // `value` 为 Layer 的 data 数据
   onAreaEnter ({ name, cp, value }) {
     // 该函数中 this 指向 Layer 实例而非地图实例
   },
@@ -63,7 +85,7 @@ const bubble = new BubbleLayer({
     { "name": "合肥", "coordinate": [117.2461, 32.0361], "size": 10 }
   ],
   // 光标移入区域时触发
-  // point 为该 bubble 在 canvas 中的坐标
+  // `point` 为该 bubble 在 canvas 中的坐标
   onAreaEnter ({ name, point, size, coordinate }) {
 
   },
@@ -73,6 +95,7 @@ const bubble = new BubbleLayer({
   }
 })
 
+// 使用 layer 实例初始化 Sinomap
 new Sinomap({
   el: '#map',
   layers: [choropleth, bubble],
@@ -80,7 +103,7 @@ new Sinomap({
 })
 ```
 
-### 开发 Layer
+### 定制 Layer
 一个示例的 Layer 就是一个独立的 Class。Sinomap 提供了多个在特定时机将当前 canvas 交由插件绘图的回调 API，只需在插件 Class 中提供相应名称的类方法，Sinomap 即会在相应时机调用插件绘图。若存在多个插件，则每个回调 API 触发时，逐个调用插件的相应接口（插件不需要的回调可以不在插件 Class 中提供）。可用的 API 如下：
 
 #### afterAreaDraw (map, points, areaProps)
@@ -127,6 +150,19 @@ new Sinomap({
 })
 ```
 
+
+## API
+目前 Sinomap 的配置均在 `new Sinomap` 时传入。所支持参数如下：
+
+* `el: string|HTMLElement` 目标 DOM 元素，支持传入选择器字符串与 DOM Node 对象。地图对应的 Canvas 会作为 `el` 的子元素插入 DOM 中。
+* `width: number` 地图宽度
+* `height: number` 地图宽度
+* `layers: Array<Layer>` Layer 数组
+* `color: string` 地图底色
+* `borderColor: string` 地图边框颜色
+* `geoJSON: GeoJSON` 地形 GeoJSON 数据
+
+
 ## 开发
 
 开发模式：
@@ -144,6 +180,6 @@ npm run build # 打包基础库及插件
 ```
 
 
-## Credit
+## 致谢
 Sinomap 的灵感与基础功能参考了 [smallworld.js](http://mikefowler.me/smallworld.js/)，API 设计借鉴了 [Chart.js](https://github.com/chartjs/Chart.js) 和 [Leaflet](http://leafletjs.com/)
 。
